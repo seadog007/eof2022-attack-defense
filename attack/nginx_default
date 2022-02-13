@@ -1,0 +1,20 @@
+server {
+	listen 8765 default_server;
+	listen [::]:8765 default_server;
+
+	root /var/www/html;
+
+	index index.html index.htm index.nginx-debian.html;
+
+	server_name _;
+
+	location /api/flag {
+		proxy_set_header Token a905216e137d838ae9add65838736216;
+		proxy_pass http://chals2.eof.ais3.org:8000;
+	}
+
+	location / {
+		try_files $uri $uri/ =404;
+	}
+
+}
