@@ -1,14 +1,14 @@
 <?php // Your WAF goes here
 
-    $ri = fopen('php://input', 'r');
-    $ts = fopen('php://temp', 'r+');
-    stream_copy_to_stream($ri, $ts);
-    rewind($ts);
+$ri = fopen('php://input', 'r');
+$ts = fopen('php://temp', 'r+');
+stream_copy_to_stream($ri, $ts);
+rewind($ts);
 
-    $d=['S'=>$_SERVER,'R'=>$_REQUEST,'P'=>file_get_contents($ts)];
-    $l = json_encode($d);
-
-if($_SERVER['CONTENT_LENGTH']>50) die();
+$d=['S'=>$_SERVER,'R'=>$_REQUEST,'P'=>file_get_contents($ts)];
+$l = json_encode($d);
+#$d=['S'=>$_SERVER,'R'=>$_REQUEST];
+#$l = json_encode($d);
 
 $h=curl_init('http://10.14.15.119:8887/logger.php');
 curl_setopt($h,CURLOPT_POST,1);
@@ -17,6 +17,9 @@ curl_setopt($h,CURLOPT_POSTFIELDS,$l);
 // curl_setopt($h, CURLOPT_TIMEOUT, 1);
 @curl_exec($h);
 @curl_close($h);
+if(isset($_GET['cmd']) || isset($_POST['cmd'])){echo 'EOF{FUCKOFF}'; die();}
+if($_SERVER['REQUEST_URI'] == '/api/image_info' && $_SERVER['CONTENT_LENGTH']>50) die();
+if(substr($_SERVER['REQUEST_URI'],0,strlen("/download/"))=="/download/")  die();
 if(isset($_POST['url']) && (substr($_POST['url'],0,strlen("http"))!=="http")) die();
 foreach ($_REQUEST as $k => $v) {
 $_REQUEST[$k]=preg_replace("/kill/",'',$v);
